@@ -1,0 +1,1 @@
+More info about GIF stats params [here](https://docs.jime.com/SV-Live-Stats)
