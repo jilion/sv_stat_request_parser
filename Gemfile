@@ -4,6 +4,9 @@ source "http://rubygems.org"
 gemspec
 
 gem 'rake'
+
+gem 'useragent', :git => 'git://github.com/Jilion/useragent.git'
+
 gem 'rb-fsevent', '~> 0.9.0.pre3'
 gem 'ruby_gntp'
 gem 'guard', :git => 'git://github.com/guard/guard.git', :branch => 'dev'
