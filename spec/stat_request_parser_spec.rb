@@ -7,16 +7,227 @@ describe StatRequestParser do
 
     context "load event" do
 
-      specify { subject.stat_incs({
-          t: 'ibvjcopp', e: 'l', h: 'm', d: 'd', vt: ['abcd1234'], pm: ['h']
-        }, user_agent).should eql({
-          site: { t: 'ibvjcopp', inc: { 'pv.m' => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } },
-          videos: [
-            { t: 'ibvjcopp', vt: 'abcd1234', inc: { 'vl.m' => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } }
-          ]
-        })
-      }
+      %w[m e].each do |hostname|
+        describe "#{hostname} hostname with 1 video loaded" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234'], pm: ['h']
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { "pv.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } }
+              ]
+            })
+          }
+        end
 
+        describe "embed #{hostname} hostname with 1 video loaded" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234'], pm: ['h'], em: 1
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { "pv.em" => 1 } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.em" => 1 } }
+              ]
+            })
+          }
+        end
+
+        describe "#{hostname} hostname with 1 video loaded (but not on page load)" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234'], pm: ['h'], po: 1
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } }
+              ]
+            })
+          }
+        end
+
+        describe "embed #{hostname} hostname with 1 video loaded (but not on page load)" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234'], pm: ['h'], em: 1, po: 1
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.em" => 1 } }
+              ]
+            })
+          }
+        end
+
+        describe "#{hostname} hostname with empty video loaded" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: [''], pm: ['h']
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { "pv.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } },
+              videos: []
+            })
+          }
+        end
+
+        describe "#{hostname} hostname with 2 video loaded" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234', 'efgh5678'], pm: ['h','f']
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { "pv.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1, "md.f.d" => 1 } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } },
+                { st: 'site1234', u: 'efgh5678', inc: { "vl.#{hostname}" => 1, "bp.saf-osx" => 1, "md.f.d" => 1 } }
+              ]
+            })
+          }
+        end
+
+        describe "#{hostname} hostname with 2 video loaded (same player mode)" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234', 'efgh5678'], pm: ['h','h']
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { "pv.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 2 } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } },
+                { st: 'site1234', u: 'efgh5678', inc: { "vl.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } }
+              ]
+            })
+          }
+        end
+
+        describe "#{hostname} hostname without pm params" do
+          specify { expect { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234', 'efgh5678']
+            }, user_agent) }.should raise_error(StatRequestParser::BadParamsError)
+          }
+        end
+      end
+
+      %w[d i].each do |hostname|
+        describe "#{hostname} hostname with 1 video loaded" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234'], pm: ['h']
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { "pv.#{hostname}" => 1 } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1 } }
+              ]
+            })
+          }
+        end
+
+        describe "embed #{hostname} hostname with 1 video loaded" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234'], pm: ['h'], em: 1
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { } }
+              ]
+            })
+          }
+        end
+
+        describe "#{hostname} hostname with empty video loaded" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: [''], pm: ['h']
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { "pv.#{hostname}" => 1 } },
+              videos: []
+            })
+          }
+        end
+
+        describe "#{hostname} hostname with 1 video loaded (but not on page load)" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234'], pm: ['h'], po: 1
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1 } }
+              ]
+            })
+          }
+        end
+
+        describe "embed #{hostname} hostname with 1 video loaded (but not on page load)" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234'], pm: ['h'], em: 1, po: 1
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { } }
+              ]
+            })
+          }
+        end
+
+        describe "#{hostname} hostname with 2 video loaded" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234', 'efgh5678'], pm: ['h','f']
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { "pv.#{hostname}" => 1 } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1 } },
+                { st: 'site1234', u: 'efgh5678', inc: { "vl.#{hostname}" => 1 } }
+              ]
+            })
+          }
+        end
+      end
+
+    end
+
+    context "view event" do
+
+      %w[m e].each do |hostname|
+        describe "#{hostname} hostname" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vcs: ['source12', 'source34']
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { "vv.#{hostname}" => 1 } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vv.#{hostname}" => 1, "vs.source12" => 1 } }
+              ]
+            })
+          }
+        end
+
+        describe "embed #{hostname} hostname" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vcs: ['source12', 'source34'], em: 1
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { "vv.em" => 1 } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vv.em" => 1 } }
+              ]
+            })
+          }
+        end
+      end
+
+      %w[d i].each do |hostname|
+        describe "#{hostname} hostname" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vcs: ['source12', 'source34']
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { "vv.#{hostname}" => 1 } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vv.#{hostname}" => 1 } }
+              ]
+            })
+          }
+        end
+
+        describe "embed #{hostname} hostname" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vcs: ['source12', 'source34'], em: 1
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: {} },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: {} }
+              ]
+            })
+          }
+        end
+      end
     end
   end
 
