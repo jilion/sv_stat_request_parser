@@ -10,7 +10,7 @@ describe StatRequestParser do
       %w[m e].each do |hostname|
         describe "#{hostname} hostname with 1 video loaded" do
           specify { subject.stat_incs({
-              t: 'site1234', e: 'l', h: hostname, d: 'd', vu: ['abcd1234'], pm: ['h']
+              t: 'site1234', e: 'l', d: 'd', h: hostname, vu: ['abcd1234'], pm: ['h']
             }, user_agent).should eql({
               site: { t: 'site1234', inc: { "pv.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } },
               videos: [

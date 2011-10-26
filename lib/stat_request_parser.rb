@@ -13,7 +13,7 @@ module StatRequestParser
   #
   def self.stat_incs(params, user_agent, hits = 1)
     incs = { site: {}, videos: [] }
-    if (params.keys & GLOBAL_KEYS) == GLOBAL_KEYS
+    if (params.keys & GLOBAL_KEYS).sort == GLOBAL_KEYS.sort
       # Site
       site = { t: params[:t], inc: {} }
       case params[:e]
@@ -75,8 +75,8 @@ module StatRequestParser
             # Video view
             video[:inc]['vv.em'] = hits
           else
-          # Video source view
-          video[:inc]['vs.' + params[:vcs].first] = hits
+            # Video source view
+            video[:inc]['vs.' + params[:vcs].first] = hits
           end
         end
         incs[:videos] << video
