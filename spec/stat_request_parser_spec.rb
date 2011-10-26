@@ -180,11 +180,11 @@ describe StatRequestParser do
       %w[m e].each do |hostname|
         describe "#{hostname} hostname" do
           specify { subject.stat_incs({
-              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vcs: ['source12', 'source34']
+              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vn: 'My Video', vcs: ['source12', 'source34']
             }, user_agent).should eql({
               site: { t: 'site1234', inc: { "vv.#{hostname}" => 1 } },
               videos: [
-                { st: 'site1234', u: 'abcd1234', inc: { "vv.#{hostname}" => 1, "vs.source12" => 1 } }
+                { st: 'site1234', u: 'abcd1234', n: 'My Video', inc: { "vv.#{hostname}" => 1, "vs.source12" => 1 } }
               ]
             })
           }
@@ -192,11 +192,11 @@ describe StatRequestParser do
 
         describe "embed #{hostname} hostname" do
           specify { subject.stat_incs({
-              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vcs: ['source12', 'source34'], em: 1
+              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vn: 'My Video', vcs: ['source12', 'source34'], em: 1
             }, user_agent).should eql({
               site: { t: 'site1234', inc: { "vv.em" => 1 } },
               videos: [
-                { st: 'site1234', u: 'abcd1234', inc: { "vv.em" => 1 } }
+                { st: 'site1234', u: 'abcd1234', n: 'My Video', inc: { "vv.em" => 1 } }
               ]
             })
           }
@@ -206,11 +206,11 @@ describe StatRequestParser do
       %w[d i].each do |hostname|
         describe "#{hostname} hostname" do
           specify { subject.stat_incs({
-              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vcs: ['source12', 'source34']
+              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vn: 'My Video', vcs: ['source12', 'source34']
             }, user_agent).should eql({
               site: { t: 'site1234', inc: { "vv.#{hostname}" => 1 } },
               videos: [
-                { st: 'site1234', u: 'abcd1234', inc: { "vv.#{hostname}" => 1 } }
+                { st: 'site1234', u: 'abcd1234', n: 'My Video', inc: { "vv.#{hostname}" => 1 } }
               ]
             })
           }
@@ -218,11 +218,11 @@ describe StatRequestParser do
 
         describe "embed #{hostname} hostname" do
           specify { subject.stat_incs({
-              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vcs: ['source12', 'source34'], em: 1
+              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vn: 'My Video', vcs: ['source12', 'source34'], em: 1
             }, user_agent).should eql({
               site: { t: 'site1234', inc: {} },
               videos: [
-                { st: 'site1234', u: 'abcd1234', inc: {} }
+                { st: 'site1234', u: 'abcd1234', n: 'My Video', inc: {} }
               ]
             })
           }

@@ -61,7 +61,7 @@ module StatRequestParser
           end
         end
       when 's'
-        video = { st: params[:t], u: params[:vu], inc: {} }
+        video = { st: params[:t], u: params[:vu], n: params[:vn], inc: {} }
         unless params.key?(:em)
           # Site Video view
           site[:inc]['vv.' + params[:h]] = hits
