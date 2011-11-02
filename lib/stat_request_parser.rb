@@ -76,7 +76,7 @@ module StatRequestParser
             video[:inc]['vv.em'] = hits
           else
             # Video source view
-            video[:inc]['vs.' + params[:vcs].first] = hits
+            video[:inc]['vs.' + params[:vc]] = hits
           end
         end
         incs[:videos] << video
