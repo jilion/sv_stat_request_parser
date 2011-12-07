@@ -1,4 +1,4 @@
-More info about GIF stats params [here](https://docs.jime.com/SV-Live-Stats)
+More info about GIF stats params [here](https://github.com/jilion/sublimevideo.net/wiki/Live-Stats)
 
 Please don't forget to add
 
