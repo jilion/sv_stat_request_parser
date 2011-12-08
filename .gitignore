@@ -7,7 +7,6 @@ doc/*
 .bundle
 .yardoc
 .rbx
-.rvmrc
 Gemfile.lock
 
 ## MAC OS
