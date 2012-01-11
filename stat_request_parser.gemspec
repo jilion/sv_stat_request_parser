@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport', '>= 3.0.0'
 
   s.add_development_dependency 'bundler'
-  s.add_development_dependency 'rspec', '~> 2.7.0'
+  s.add_development_dependency 'rspec', '~> 2.8.0'
   s.add_development_dependency 'guard-rspec'
 
   s.files        = Dir.glob('{lib}/**/*') + %w[README.md]
