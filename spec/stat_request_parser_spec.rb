@@ -14,7 +14,7 @@ describe StatRequestParser do
             }, user_agent).should eql({
               site: { t: 'site1234', inc: { "pv.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } },
               videos: [
-                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } }
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1, "vlc" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } }
               ]
             })
           }
@@ -38,7 +38,7 @@ describe StatRequestParser do
             }, user_agent).should eql({
               site: { t: 'site1234', inc: { } },
               videos: [
-                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } }
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1, "vlc" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } }
               ]
             })
           }
@@ -72,8 +72,8 @@ describe StatRequestParser do
             }, user_agent).should eql({
               site: { t: 'site1234', inc: { "pv.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1, "md.f.d" => 1 } },
               videos: [
-                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } },
-                { st: 'site1234', u: 'efgh5678', inc: { "vl.#{hostname}" => 1, "bp.saf-osx" => 1, "md.f.d" => 1 } }
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1, "vlc" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } },
+                { st: 'site1234', u: 'efgh5678', inc: { "vl.#{hostname}" => 1, "vlc" => 1, "bp.saf-osx" => 1, "md.f.d" => 1 } }
               ]
             })
           }
@@ -85,8 +85,8 @@ describe StatRequestParser do
             }, user_agent).should eql({
               site: { t: 'site1234', inc: { "pv.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 2 } },
               videos: [
-                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } },
-                { st: 'site1234', u: 'efgh5678', inc: { "vl.#{hostname}" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } }
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1, "vlc" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } },
+                { st: 'site1234', u: 'efgh5678', inc: { "vl.#{hostname}" => 1, "vlc" => 1, "bp.saf-osx" => 1, "md.h.d" => 1 } }
               ]
             })
           }
@@ -184,7 +184,7 @@ describe StatRequestParser do
             }, user_agent).should eql({
               site: { t: 'site1234', inc: { "vv.#{hostname}" => 1 } },
               videos: [
-                { st: 'site1234', u: 'abcd1234', n: 'My Video', inc: { "vv.#{hostname}" => 1, "vs.source34" => 1 } }
+                { st: 'site1234', u: 'abcd1234', n: 'My Video', inc: { "vv.#{hostname}" => 1, "vvc" => 1, "vs.source34" => 1 } }
               ]
             })
           }

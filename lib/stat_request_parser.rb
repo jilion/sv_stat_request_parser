@@ -50,6 +50,8 @@ module StatRequestParser
                 # Video load (embed)
                 video[:inc]['vl.em'] = hits
               else
+                # Video load chart (main & extra only)
+                video[:inc]['vlc'] = hits
                 # Browser + Plateform
                 bp ||= browser_and_platform_key(user_agent)
                 video[:inc]['bp.' + bp] = hits
@@ -75,6 +77,8 @@ module StatRequestParser
             # Video view
             video[:inc]['vv.em'] = hits
           else
+            # Video view chart (main & extra only)
+            video[:inc]['vvc'] = hits
             # Video source view
             video[:inc]['vs.' + params[:vc]] = hits
           end
