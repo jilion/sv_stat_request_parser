@@ -7,6 +7,10 @@ gem 'rake'
 
 gem 'useragent', :git => 'git://github.com/jilion/useragent.git'
 
-gem 'ruby_gntp'
 gem 'gemfury'
 
+group :test do
+  gem 'ruby_gntp'
+  gem 'rb-fsevent'
+  gem 'guard-rspec'
+end
