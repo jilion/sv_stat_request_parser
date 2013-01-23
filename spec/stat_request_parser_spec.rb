@@ -287,6 +287,18 @@ describe StatRequestParser do
           }
         end
 
+        describe "youtube #{hostname} hostname" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vn: 'My Video', vio: 'y'
+            }, user_agent).should eql({
+              site: { t: 'site1234', inc: { "vv.#{hostname}" => 1 } },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', n: 'My Video', inc: { "vv.#{hostname}" => 1, "vvc" => 1 } }
+              ]
+            })
+          }
+        end
+
         describe "embed #{hostname} hostname" do
           specify { subject.stat_incs({
               t: 'site1234', e: 's', h: hostname, d: 'd', vu: 'abcd1234', vn: 'My Video', vc: 'source34', vcs: ['source12', 'source34'], em: 1

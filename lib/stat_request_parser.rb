@@ -81,8 +81,10 @@ module StatRequestParser
           else
             # Video view chart (main & extra only)
             video[:inc]['vvc'] = hits
-            # Video source view
-            video[:inc]['vs.' + params[:vc]] = hits
+            if params.key?(:vc)
+              # Video source view
+              video[:inc]['vs.' + params[:vc]] = hits
+            end
           end
         end
         incs[:videos] << video
