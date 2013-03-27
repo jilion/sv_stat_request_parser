@@ -22,6 +22,7 @@ module StatRequestParser
           # Site Page Visits (non-embed)
           site[:inc]['pv.' + params[:h]] = hits unless params.key?(:em)
           site[:set] = { 's' => true } if params.key?(:s)
+          site[:set] = { 'jq' => params[:jq] } if params.key?(:jq)
           site[:add_to_set] = { 'st' => params.key?(:st) ? params[:st] : 's' }
           # Only for main & extra hostname
           if %w[m e].include?(params[:h])

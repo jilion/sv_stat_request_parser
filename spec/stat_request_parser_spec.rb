@@ -182,6 +182,22 @@ describe StatRequestParser do
           }
         end
 
+        describe "#{hostname} hostname with 1 video loaded & jquery info" do
+          specify { subject.stat_incs({
+              t: 'site1234', e: 'l', d: 'd', h: hostname, vu: ['abcd1234'], pm: ['h'], jq: '1.9.0'
+            }, user_agent).should eql({
+              site: { t: 'site1234',
+                inc: { "pv.#{hostname}" => 1 },
+                add_to_set: { "st" => "s" },
+                set: { "jq" => '1.9.0' }
+              },
+              videos: [
+                { st: 'site1234', u: 'abcd1234', inc: { "vl.#{hostname}" => 1 } }
+              ]
+            })
+          }
+        end
+
         describe "#{hostname} hostname with 1 video loaded & stage info" do
           specify { subject.stat_incs({
               t: 'site1234', e: 'l', d: 'd', h: hostname, vu: ['abcd1234'], pm: ['h'], st: 'b'
